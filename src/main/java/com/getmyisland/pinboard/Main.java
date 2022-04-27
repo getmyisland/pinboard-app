@@ -2,14 +2,17 @@ package com.getmyisland.pinboard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().setBackground(Color.WHITE);
