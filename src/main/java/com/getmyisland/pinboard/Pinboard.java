@@ -1,23 +1,25 @@
 package com.getmyisland.pinboard;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Toolkit;
 
-import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 public class Pinboard {
-    public Pinboard() {
-        JFrame frame = new JFrame();
-        frame.setLayout(new BorderLayout());
-        frame.setBackground(new Color(255, 255, 255));
+    public JPanel getPinboard() {
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
+        panel.setComponentPopupMenu(new PinboardPopup());
         
-        // Detect the screen size and set it to the preferred size
-        frame.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Pinboard App");
-        frame.pack();
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
+        return panel;
+    }
+    
+    public class PinboardPopup extends JPopupMenu {
+        JMenuItem anItem;
+        public PinboardPopup() {
+            anItem = new JMenuItem("Click Me!");
+            add(anItem);
+        }
     }
 }
