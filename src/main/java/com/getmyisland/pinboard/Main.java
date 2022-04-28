@@ -2,13 +2,9 @@ package com.getmyisland.pinboard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
 
@@ -17,10 +13,10 @@ public class Main {
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().setBackground(Color.WHITE);
         
-        //JPanel toolbarPanel = new Toolbar().getToolbar();
-        //frame.getContentPane().add(toolbarPanel, BorderLayout.PAGE_START);
+        Toolbar toolbarPanel = new Toolbar();
+        frame.getContentPane().add(toolbarPanel, BorderLayout.PAGE_START);
         
-        JPanel pinboardPanel = new Pinboard().getPinboard();
+        Pinboard pinboardPanel = new Pinboard();
         frame.getContentPane().add(pinboardPanel, BorderLayout.CENTER);
         
         // Detect the screen size and set it to the preferred size
