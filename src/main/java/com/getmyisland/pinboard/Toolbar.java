@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 
 public class Toolbar extends JToolBar {
@@ -19,23 +20,21 @@ public class Toolbar extends JToolBar {
         setBackground(new Color(240, 240, 240));
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(218, 218, 218)));
         
-        // Create new board button
-        ToolbarButton createNotesButton = new ToolbarButton("Create Note");
-        createNotesButton.addActionListener(new ActionListener() {
+        ToolbarButton createNoteButton = new ToolbarButton("Create Title Note");
+        createNoteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Action performed");
+                String noteTitle = JOptionPane.showInputDialog(Main.getFrame(), "Input Node Title", null);
+                
+                if(noteTitle == null || noteTitle.trim().length() == 0) {
+                    return;
+                }
+                
+                Note note = new Note(noteTitle);
+                Main.getPinboard().add(note);
+                Main.UpdateFrame();
             }
         });
-        add(createNotesButton);
-        
-     // Create new board button
-        ToolbarButton testButton = new ToolbarButton("Test");
-        testButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Action performed");
-            }
-        });
-        add(testButton);
+        add(createNoteButton);
     }
     
     public class ToolbarButton extends JButton {

@@ -5,19 +5,27 @@ import java.awt.Color;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 public class Main {
-
+    private static JFrame frame;
+    
+    private static Toolbar toolbarPanel;
+    private static Pinboard pinboardPanel;
+    
     public static void main(String[] args) { 
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().setBackground(Color.WHITE);
+        frame.getContentPane().setBackground(new Color(255, 255, 255));
         
-        Toolbar toolbarPanel = new Toolbar();
+        toolbarPanel = new Toolbar();
         frame.getContentPane().add(toolbarPanel, BorderLayout.PAGE_START);
         
-        Pinboard pinboardPanel = new Pinboard();
-        frame.getContentPane().add(pinboardPanel, BorderLayout.CENTER);
+        pinboardPanel = new Pinboard();
+        JScrollPane pinboardScrollPane = new JScrollPane(pinboardPanel);
+        pinboardScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        pinboardScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        frame.getContentPane().add(pinboardScrollPane, BorderLayout.CENTER);
         
         // Detect the screen size and set it to the preferred size
         frame.getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -26,5 +34,18 @@ public class Main {
         frame.pack();
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
+    }
+    
+    public static void UpdateFrame() {
+        frame.revalidate();
+        frame.repaint();
+    }
+    
+    public static JFrame getFrame() {
+        return frame;
+    }
+    
+    public static Pinboard getPinboard() {
+        return pinboardPanel;
     }
 }
