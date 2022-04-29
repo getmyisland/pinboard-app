@@ -1,7 +1,6 @@
 package com.getmyisland.pinboard;
 
 import java.awt.*;
-import javax.swing.*;
 
 /**
  *  The DragLayout is used as a layout manager for a Container that supports
@@ -20,9 +19,13 @@ import javax.swing.*;
  *  any component is outside the bounds, then the location of all components
  *  will be adjusted by the same amount.
  */
-public class DragLayout implements LayoutManager, java.io.Serializable
-{
-	private boolean usePreferredSize;
+public class DragLayout implements LayoutManager, java.io.Serializable {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -6278802082116725971L;
+    
+    private boolean usePreferredSize;
 
 	/**
 	 *  Convenience constructor

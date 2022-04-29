@@ -4,12 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.Serializable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -18,6 +16,11 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 public class Note extends JPanel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1110723371213545173L;
+
     private final String noteTitle;
     
     private final JLabel noteTitleLabel;

@@ -2,13 +2,16 @@ package com.getmyisland.pinboard;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
 public class Pinboard extends JPanel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -43371314411023743L;
     private List<Note> noteList = new ArrayList<>();
     
     public Pinboard() {
@@ -17,12 +20,16 @@ public class Pinboard extends JPanel {
         setLayout(new DragLayout());
     }
     
-    public void LoadPinboard(List<String[]> noteDataLines) {
+    public void CleanBoard() {
         for (Note note : noteList) {
             remove(note);
         }
         
         noteList = new ArrayList<Note>();
+    }
+    
+    public void LoadPinboard(List<String[]> noteDataLines) {
+        CleanBoard();
         
         for(String[] noteData : noteDataLines) {
             Note newNote = new Note(noteData[2]);
