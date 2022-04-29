@@ -2,31 +2,54 @@ package com.getmyisland.pinboard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 public class Main {
-    private static JFrame frame;
+    public static Main instance;
     
-    private static Toolbar toolbarPanel;
-    private static Pinboard pinboardPanel;
-    
-    public static void main(String[] args) { 
-        frame = new JFrame();
+    private final String projectDocumentFilePath = new JFileChooser().getFileSystemView().getDefaultDirectory()
+            .toString() + "\\GetMyIsland\\Pinboard";
+
+    private static final JFrame frame = new JFrame();
+
+    private static Toolbar toolbar;
+    private static Pinboard pinboard;
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        
+        instance = main;
+        
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().setBackground(new Color(255, 255, 255));
-        
-        toolbarPanel = new Toolbar();
-        frame.getContentPane().add(toolbarPanel, BorderLayout.PAGE_START);
-        
-        pinboardPanel = new Pinboard();
-        JScrollPane pinboardScrollPane = new JScrollPane(pinboardPanel);
+
+        toolbar = new Toolbar();
+        frame.getContentPane().add(toolbar, BorderLayout.PAGE_START);
+
+        pinboard = new Pinboard();
+        JScrollPane pinboardScrollPane = new JScrollPane(pinboard);
         pinboardScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         pinboardScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        pinboardScrollPane.setWheelScrollingEnabled(false);
         frame.getContentPane().add(pinboardScrollPane, BorderLayout.CENTER);
-        
+
         // Detect the screen size and set it to the preferred size
         frame.getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,17 +58,92 @@ public class Main {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
-    
-    public static void UpdateFrame() {
+
+    public void UpdateFrame() {
         frame.revalidate();
         frame.repaint();
     }
+
+    public void loadBoardFromFile() {
+        try {
+            final File documentDirectory = new File(projectDocumentFilePath + "\\");
+            documentDirectory.mkdirs();
+            
+            final JFileChooser fileChooser = new JFileChooser(documentDirectory);
+            int returnValue = fileChooser.showOpenDialog(frame);
+            
+            if(returnValue != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            
+            File saveFile = fileChooser.getSelectedFile();
+            
+            FileReader fr = new FileReader(saveFile);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            List<String[]> noteDataLines = new ArrayList<String[]>();
+            while((line = br.readLine()) != null) {
+               String[] tempArr = line.split(",");
+               noteDataLines.add(tempArr);
+            }
+            pinboard.LoadPinboard(noteDataLines);
+            UpdateFrame();
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
+    public void saveCurrentBoardToFile() {
+        try {
+            final File documentDirectory = new File(projectDocumentFilePath + "\\");
+            documentDirectory.mkdirs();
+            final String fileName = JOptionPane.showInputDialog(Main.getFrame(), "Input file name", null);
+            final File saveFile = new File(projectDocumentFilePath + "\\" + fileName + ".csv");
+            if (!saveFile.exists()) { saveFile.createNewFile(); }
+           
+            List<String[]> dataLines = new ArrayList<>();
+            for(Note note : pinboard.getNoteList()) {
+                Point notePoint = note.getLocation();
+                
+                dataLines.add(new String[] {
+                        Integer.toString(notePoint.x), Integer.toString(notePoint.y), note.getNoteTitle(), note.getNoteDescriptionTextArea().getText()      
+                });
+            }
+            
+            PrintWriter pw = new PrintWriter(saveFile);
+            
+            dataLines.stream()
+            .map(this::convertToCSV)
+            .forEach(pw::println);
+            
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public String convertToCSV(String[] data) {
+        return Stream.of(data)
+          .map(this::escapeSpecialCharacters)
+          .collect(Collectors.joining(","));
+    }
+    
+    public String escapeSpecialCharacters(String data) {
+        String escapedData = data.replaceAll("\\R", " ");
+        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
+            data = data.replace("\"", "\"\"");
+            escapedData = "\"" + data + "\"";
+        }
+        return escapedData;
+    }
+
     public static JFrame getFrame() {
         return frame;
     }
-    
+
     public static Pinboard getPinboard() {
-        return pinboardPanel;
+        return pinboard;
     }
 }

@@ -1,31 +1,34 @@
 package com.getmyisland.pinboard;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.Serializable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class Note extends JPanel {
+    private final String noteTitle;
+    
+    private final JLabel noteTitleLabel;
+    private final JTextArea noteDescriptionTextArea;
+    
     private int x;
     private int y;
     
     public Note(final String noteTitle) {
-        GridBagConstraints c = new GridBagConstraints();
-        setLayout(new GridBagLayout());
+        this.noteTitle = noteTitle;
+        setLayout(new BorderLayout());
         setBackground(new Color(240, 240, 240));
         setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(218, 218, 218)));
         setPreferredSize(new Dimension(300, 445));
@@ -45,23 +48,28 @@ public class Note extends JPanel {
             }
         });
 
-        JLabel titleTextField = new JLabel(noteTitle);
-        titleTextField.setFont(new Font("Dialog", Font.BOLD, 25));
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(titleTextField, c);
+        noteTitleLabel = new JLabel(noteTitle);
+        noteTitleLabel.setFont(new Font("Dialog", Font.BOLD, 25));
+        noteTitleLabel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 0)));
+        add(noteTitleLabel, BorderLayout.PAGE_START);
         
-        JTextArea descriptionTextField = new JTextArea();
-        descriptionTextField.setFont(new Font("Dialog", Font.PLAIN, 18));
-        descriptionTextField.setLineWrap(true);
-        descriptionTextField.setBackground(new Color(218, 218, 218));
-        descriptionTextField.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-        c.gridx = 0;
-        c.gridy = 1;
-        c.anchor = GridBagConstraints.LINE_START;
-        c.fill = GridBagConstraints.BOTH;
-        add(descriptionTextField, c);
+        noteDescriptionTextArea = new JTextArea();
+        noteDescriptionTextArea.setFont(new Font("Dialog", Font.PLAIN, 18));
+        noteDescriptionTextArea.setLineWrap(true);
+        noteDescriptionTextArea.setBackground(new Color(225, 225, 225));
+        noteDescriptionTextArea.setBorder(new EmptyBorder(new Insets(5, 10, 10, 5)));
+        add(noteDescriptionTextArea, BorderLayout.CENTER);
+    }
+    
+    public String getNoteTitle() {
+        return this.noteTitle;
+    }
+    
+    public JLabel getNoteTitleLabel() {
+        return this.noteTitleLabel;
+    }
+    
+    public JTextArea getNoteDescriptionTextArea() {
+        return this.noteDescriptionTextArea;
     }
 }
