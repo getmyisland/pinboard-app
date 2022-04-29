@@ -32,8 +32,19 @@ public class Pinboard extends JPanel {
         CleanBoard();
         
         for(String[] noteData : noteDataLines) {
-            Note newNote = new Note(noteData[2]);
-            newNote.getNoteDescriptionTextArea().setText(noteData[3]);
+            Note newNote = null;
+            
+            if(!noteData[3].equals("null")) {
+                newNote = new Note(noteData[2]);
+                newNote.getNoteDescriptionTextArea().setText(noteData[3]);
+            } else if (!noteData[4].equals("null")) {
+                newNote = new Note(noteData[2], noteData[4]);
+            }
+            
+            if(newNote == null) {
+                newNote = new Note("New Note");
+            }
+            
             newNote.setLocation(Integer.parseInt(noteData[0]), Integer.parseInt(noteData[1]));
             noteList.add(newNote);
             add(newNote);

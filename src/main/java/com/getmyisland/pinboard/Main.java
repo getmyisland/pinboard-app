@@ -18,10 +18,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-// TODO
-// Linking Notes
-// Documentatiom
 public class Main {
     public static Main instance;
     
@@ -60,7 +59,7 @@ public class Main {
         frame.setVisible(true);
     }
 
-    public void UpdateFrame() {
+    public void updateFrame() {
         frame.revalidate();
         frame.repaint();
     }
@@ -71,8 +70,11 @@ public class Main {
             documentDirectory.mkdirs();
             
             final JFileChooser fileChooser = new JFileChooser(documentDirectory);
-            int returnValue = fileChooser.showOpenDialog(frame);
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV files", "csv"));
+            fileChooser.setAcceptAllFileFilterUsed(true);
             
+            int returnValue = fileChooser.showOpenDialog(frame);
             if(returnValue != JFileChooser.APPROVE_OPTION) {
                 return;
             }
@@ -88,7 +90,7 @@ public class Main {
                noteDataLines.add(tempArr);
             }
             pinboard.LoadPinboard(noteDataLines);
-            UpdateFrame();
+            updateFrame();
             br.close();
             fr.close();
         } catch (Exception e) {
@@ -100,7 +102,7 @@ public class Main {
         try {
             final File documentDirectory = new File(projectDocumentFilePath + "\\");
             documentDirectory.mkdirs();
-            final String fileName = JOptionPane.showInputDialog(Main.getFrame(), "Input file name", null);
+            final String fileName = JOptionPane.showInputDialog(Main.instance.getFrame(), "Input file name", null);
             final File saveFile = new File(projectDocumentFilePath + "\\" + fileName + ".csv");
             if (!saveFile.exists()) { saveFile.createNewFile(); }
            
@@ -108,9 +110,19 @@ public class Main {
             for(Note note : pinboard.getNoteList()) {
                 Point notePoint = note.getLocation();
                 
-                dataLines.add(new String[] {
-                        Integer.toString(notePoint.x), Integer.toString(notePoint.y), note.getNoteTitle(), note.getNoteDescriptionTextArea().getText()      
-                });
+                JTextArea noteArea = note.getNoteDescriptionTextArea();
+                String noteImageFilePath = note.getNoteImageFilePath();
+                
+                if(noteArea != null) {
+                    dataLines.add(new String[] {
+                            Integer.toString(notePoint.x), Integer.toString(notePoint.y), note.getNoteTitle(), note.getNoteDescriptionTextArea().getText(), "null"      
+                    });
+                }
+                else if (noteImageFilePath != null) {
+                    dataLines.add(new String[] {
+                            Integer.toString(notePoint.x), Integer.toString(notePoint.y), note.getNoteTitle(), "null", noteImageFilePath    
+                    });
+                }
             }
             
             PrintWriter pw = new PrintWriter(saveFile);
@@ -140,11 +152,11 @@ public class Main {
         return escapedData;
     }
 
-    public static JFrame getFrame() {
+    public JFrame getFrame() {
         return frame;
     }
 
-    public static Pinboard getPinboard() {
+    public Pinboard getPinboard() {
         return pinboard;
     }
 }
