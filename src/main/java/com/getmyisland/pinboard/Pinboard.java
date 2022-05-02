@@ -77,4 +77,31 @@ public class Pinboard extends JPanel {
     public List<Note> getNoteList(){
         return noteList;
     }
+    
+    /**
+     * Get a note from the {@link #noteList} by name.
+     * 
+     * @param name is the name you are searching for.
+     * @return
+     */
+    public Note getNoteByName(final String name) {
+        for(Note note : noteList) {
+            if(note.getNoteTitle().equals(name)) {
+                return note;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Delete a note.
+     * 
+     * @param note is the note you want to delete.
+     */
+    public void DeleteNote(final Note note) {
+        noteList.remove(note);
+        remove(note);
+        Main.instance.updateFrame();
+    }
 }

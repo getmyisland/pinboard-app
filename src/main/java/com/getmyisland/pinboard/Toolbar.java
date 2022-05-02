@@ -77,8 +77,6 @@ public class Toolbar extends JToolBar {
                 }
                 
                 for(Note note : Main.instance.getPinboard().getNoteList()) {
-                    System.out.println(noteTitle);
-                    System.out.println(note.getNoteTitle());
                     if(note.getNoteTitle().equals(noteTitle)) {
                         noteTitle = noteTitle + " (1)";
                     }

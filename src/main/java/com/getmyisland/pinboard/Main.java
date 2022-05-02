@@ -203,13 +203,25 @@ public class Main {
      * Removes a user-chosen note from the board.
      */
     public void DeleteNoteFromBoard() {
-        List<Note> options = pinboard.getNoteList();
-        List<String> optionStrings = new ArrayList<>();
-        for(Note note : options) {
-            
+        List<String> optionsList = new ArrayList<>();
+        List<Note> noteList = pinboard.getNoteList();
+        
+        if(noteList == null || noteList.isEmpty()) {
+            return;
         }
-        //Object selectedNote = JOptionPane.showInputDialog(frame, "Choose", "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-        //System.out.println(selectedNote.toString());
+        
+        for(Note note : noteList) {
+            optionsList.add(note.getNoteTitle());
+        }
+        String[] options = optionsList.stream().toArray(String[]::new);
+        String selectedNoteTitle = JOptionPane.showInputDialog(frame, "Choose the note you want to delete", "Delete Note Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]).toString();
+        System.out.println(selectedNoteTitle);
+        Note selectedNote = pinboard.getNoteByName(selectedNoteTitle);
+        if(selectedNote != null) {
+            pinboard.DeleteNote(selectedNote);
+        } else {
+            System.out.println("Selected Note is null");
+        }
     }
     
     /** Get the {@link #frame} */
