@@ -16,7 +16,7 @@ public class Pinboard extends JPanel {
         setBackground(new Color(255, 255, 255));
         
         // Sets the preferred size
-        setPreferredSize(new Dimension(2500, 2500));
+        setPreferredSize(new Dimension(4000, 4000));
         
         // Sets the layout
         setLayout(new DragLayout());
