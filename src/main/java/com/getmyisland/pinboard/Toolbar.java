@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
@@ -32,7 +33,7 @@ public class Toolbar extends JToolBar {
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(218, 218, 218)));
         
         // Create a button to open a board from file
-        ToolbarButton openFileButton = new ToolbarButton("Open board from file");
+        ToolbarButton openFileButton = new ToolbarButton("Open board from file...");
         openFileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.instance.loadBoardFromFile();
@@ -43,7 +44,7 @@ public class Toolbar extends JToolBar {
         addSeparator();
         
         // Create a button to save the current board to file
-        ToolbarButton saveFileButton = new ToolbarButton("Save board to file");
+        ToolbarButton saveFileButton = new ToolbarButton("Save board to file...");
         saveFileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.instance.saveCurrentBoardToFile();
@@ -66,13 +67,24 @@ public class Toolbar extends JToolBar {
         addSeparator();
         
         // Create a button to create a new note
-        ToolbarButton createNoteButton = new ToolbarButton("Create note");
+        ToolbarButton createNoteButton = new ToolbarButton("Create note...");
         createNoteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String noteTitle = JOptionPane.showInputDialog(Main.instance.getFrame(), "Input Note Title", null);
                 
                 if(noteTitle == null || noteTitle.trim().length() == 0) {
                     return;
+                }
+                
+                for(Note note : Main.instance.getPinboard().getNoteList()) {
+                    if(note.getNoteTitle() == noteTitle) {
+                        System.out.println(note.getNoteTitle());
+                        if(note.getNoteTitle().matches("(\\d)$")) {
+                            System.out.println("LOL IT WORKS");
+                        }
+                        
+                        noteTitle = noteTitle + " (1)";
+                    }
                 }
                 
                 Note note = new Note(noteTitle);
@@ -86,7 +98,7 @@ public class Toolbar extends JToolBar {
         addSeparator();
         
         // Create a button to create a new image note
-        ToolbarButton createImageNote = new ToolbarButton("Create image note");
+        ToolbarButton createImageNote = new ToolbarButton("Create image note...");
         createImageNote.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String noteTitle = JOptionPane.showInputDialog(Main.instance.getFrame(), "Input Note Title", null);
@@ -114,6 +126,18 @@ public class Toolbar extends JToolBar {
             }
         });
         add(createImageNote);
+        
+        addSeparator();
+        
+        // Create a button to delete a note from the board
+        ToolbarButton deleteNoteButton = new ToolbarButton("Delete Note...");
+        deleteNoteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.instance.DeleteNoteFromBoard();
+            }
+        });
+        add(deleteNoteButton);
     }
     
     public class ToolbarButton extends JButton {

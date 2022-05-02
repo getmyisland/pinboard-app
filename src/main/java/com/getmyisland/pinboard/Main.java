@@ -199,6 +199,19 @@ public class Main {
         return escapedData;
     }
 
+    /**
+     * Removes a user-chosen note from the board.
+     */
+    public void DeleteNoteFromBoard() {
+        List<Note> options = pinboard.getNoteList();
+        List<String> optionStrings = new ArrayList<>();
+        for(Note note : options) {
+            
+        }
+        //Object selectedNote = JOptionPane.showInputDialog(frame, "Choose", "Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        //System.out.println(selectedNote.toString());
+    }
+    
     /** Get the {@link #frame} */
     public JFrame getFrame() {
         return frame;
