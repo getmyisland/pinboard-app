@@ -33,7 +33,7 @@ public class Toolbar extends JToolBar {
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(218, 218, 218)));
         
         // Create a button to open a board from file
-        ToolbarButton openFileButton = new ToolbarButton("Open board from file...");
+        ToolbarButton openFileButton = new ToolbarButton("Open board from file");
         openFileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.instance.loadBoardFromFile();
@@ -44,7 +44,7 @@ public class Toolbar extends JToolBar {
         addSeparator();
         
         // Create a button to save the current board to file
-        ToolbarButton saveFileButton = new ToolbarButton("Save board to file...");
+        ToolbarButton saveFileButton = new ToolbarButton("Save board to file");
         saveFileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.instance.saveCurrentBoardToFile();
@@ -58,7 +58,14 @@ public class Toolbar extends JToolBar {
         ToolbarButton cleanBoardButton = new ToolbarButton("Clear board");
         cleanBoardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Main.instance.getPinboard().CleanBoard();
+                int input = JOptionPane.showConfirmDialog(Main.instance.getFrame(), "The whole board will be deleted!", "Delete board", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                
+                if(input != 0) {
+                    // 0 means the user picked OK
+                    return;
+                }
+                
+                Main.instance.getPinboard().cleanBoard();
                 Main.instance.updateFrame();
             }
         });
@@ -67,7 +74,7 @@ public class Toolbar extends JToolBar {
         addSeparator();
         
         // Create a button to create a new note
-        ToolbarButton createNoteButton = new ToolbarButton("Create note...");
+        ToolbarButton createNoteButton = new ToolbarButton("Create new note");
         createNoteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String noteTitle = JOptionPane.showInputDialog(Main.instance.getFrame(), "Input Note Title", null);
@@ -93,7 +100,7 @@ public class Toolbar extends JToolBar {
         addSeparator();
         
         // Create a button to create a new image note
-        ToolbarButton createImageNote = new ToolbarButton("Create image note...");
+        ToolbarButton createImageNote = new ToolbarButton("Create image note");
         createImageNote.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String noteTitle = JOptionPane.showInputDialog(Main.instance.getFrame(), "Input Note Title", null);
@@ -125,11 +132,11 @@ public class Toolbar extends JToolBar {
         addSeparator();
         
         // Create a button to delete a note from the board
-        ToolbarButton deleteNoteButton = new ToolbarButton("Delete Note...");
+        ToolbarButton deleteNoteButton = new ToolbarButton("Delete existing note");
         deleteNoteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.instance.DeleteNoteFromBoard();
+                Main.instance.deleteNoteFromBoard();
             }
         });
         add(deleteNoteButton);

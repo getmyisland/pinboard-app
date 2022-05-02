@@ -25,7 +25,7 @@ public class Pinboard extends JPanel {
     /**
      * Removes all notes from the current board.
      */
-    public void CleanBoard() {
+    public void cleanBoard() {
         for (Note note : noteList) {
             // Remove each note
             remove(note);
@@ -40,8 +40,8 @@ public class Pinboard extends JPanel {
      * 
      * @param noteDataLines a List of String[] to pass in the note data from the save file.
      */
-    public void LoadPinboard(List<String[]> noteDataLines) {
-        CleanBoard();
+    public void loadPinboard(List<String[]> noteDataLines) {
+        cleanBoard();
         
         // Cycle trough all String[]
         for(String[] noteData : noteDataLines) {
@@ -87,6 +87,7 @@ public class Pinboard extends JPanel {
     public Note getNoteByName(final String name) {
         for(Note note : noteList) {
             if(note.getNoteTitle().equals(name)) {
+                // If the notes name is the same as the passed in name
                 return note;
             }
         }
@@ -99,7 +100,7 @@ public class Pinboard extends JPanel {
      * 
      * @param note is the note you want to delete.
      */
-    public void DeleteNote(final Note note) {
+    public void deleteNote(final Note note) {
         noteList.remove(note);
         remove(note);
         Main.instance.updateFrame();
