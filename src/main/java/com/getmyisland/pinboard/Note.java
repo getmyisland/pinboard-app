@@ -53,7 +53,7 @@ public class Note extends JPanel {
         setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(218, 218, 218)));
 
         // Set the preferred size
-        setPreferredSize(new Dimension(300, 445));
+        setPreferredSize(new Dimension(400, 500));
 
         // Drag events
         addMouseListener(new MouseAdapter() {
