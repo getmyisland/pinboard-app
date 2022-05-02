@@ -15,21 +15,24 @@ import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Toolbar extends JToolBar {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -1905594052007376798L;
-
     public Toolbar() {
+        // Create a FlowLayout and configure it
         FlowLayout layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         layout.setVgap(10);
         layout.setHgap(10);
+        
+        // Apply it to the toolbar
         setLayout(layout);
+        
+        // Set a background color
         setBackground(new Color(240, 240, 240));
+        
+        // Set a bottom-only border
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(218, 218, 218)));
         
-        ToolbarButton openFileButton = new ToolbarButton("Open Board");
+        // Create a button to open a board from file
+        ToolbarButton openFileButton = new ToolbarButton("Open board from file");
         openFileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.instance.loadBoardFromFile();
@@ -39,7 +42,8 @@ public class Toolbar extends JToolBar {
         
         addSeparator();
         
-        ToolbarButton saveFileButton = new ToolbarButton("Save Board");
+        // Create a button to save the current board to file
+        ToolbarButton saveFileButton = new ToolbarButton("Save board to file");
         saveFileButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.instance.saveCurrentBoardToFile();
@@ -49,7 +53,8 @@ public class Toolbar extends JToolBar {
 
         addSeparator();
 
-        ToolbarButton cleanBoardButton = new ToolbarButton("Clear Board");
+        // Create a button to clear the current board
+        ToolbarButton cleanBoardButton = new ToolbarButton("Clear board");
         cleanBoardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.instance.getPinboard().CleanBoard();
@@ -60,7 +65,8 @@ public class Toolbar extends JToolBar {
         
         addSeparator();
         
-        ToolbarButton createNoteButton = new ToolbarButton("Create Note");
+        // Create a button to create a new note
+        ToolbarButton createNoteButton = new ToolbarButton("Create note");
         createNoteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String noteTitle = JOptionPane.showInputDialog(Main.instance.getFrame(), "Input Note Title", null);
@@ -79,7 +85,8 @@ public class Toolbar extends JToolBar {
         
         addSeparator();
         
-        ToolbarButton createImageNote = new ToolbarButton("Create image Note");
+        // Create a button to create a new image note
+        ToolbarButton createImageNote = new ToolbarButton("Create image note");
         createImageNote.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String noteTitle = JOptionPane.showInputDialog(Main.instance.getFrame(), "Input Note Title", null);
@@ -110,17 +117,20 @@ public class Toolbar extends JToolBar {
     }
     
     public class ToolbarButton extends JButton {
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 159196000788565220L;
-
         public ToolbarButton(final String title) {
             setText(title);
+            
+            // Set the text color to black
             setForeground(Color.BLACK);
+            
+            // Disable effects on button
             setFocusPainted(false);
             setRolloverEnabled(false);
+            
+            // Set background color of button
             setBackground(new Color(230, 230, 230));
+            
+            // Sets new bold font
             setFont(new Font("Dialog", Font.BOLD, 14));
         }
     }
