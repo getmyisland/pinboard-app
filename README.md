@@ -12,11 +12,11 @@ A pinboard app that allows you to create and connect notes easily.
 4. NoteType specific
 ```
 
-Example for a TitleDescriptionNote = 
+Example for a TitleDescriptionNote =\
 `200,320,NoteType.TitleDescriptionNote,This is a Note Title,This is a really long Note Description`
 
-Example for a TitleImageNote = 
+Example for a TitleImageNote =\
 `150,220,NoteType.TitleImageNote,This is another Title,C:/Path/To/Image`
 
-Example for a ImageNote = 
+Example for a ImageNote =\
 `560,820,NoteType.ImageNote,C:/Path/To/Another/Image`
