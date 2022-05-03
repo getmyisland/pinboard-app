@@ -25,50 +25,47 @@ public class Main {
     /** Main instance to access methods from Main. */
     public static final Main instance = new Main();
 
-    /** String containing the file path of the projects directory. */
+    /** The file path of the projects directory. */
     private final String projectDocumentFilePath = new JFileChooser().getFileSystemView().getDefaultDirectory()
             .toString() + "\\GetMyIsland\\Pinboard";
 
-    /** The main JFrame. */
-    private static final JFrame frame = new JFrame();
+    /** The main JFrame component containing the Java application. */
+    private final JFrame frame = new JFrame();
 
-    /** The toolbar. */
-    private static Toolbar toolbar;
+    /** The toolbar component. */
+    private final Toolbar toolbar = new Toolbar();
 
-    /** The pinboard. */
-    private static Pinboard pinboard;
+    /** The pinboard component. */
+    private final Pinboard pinboard = new Pinboard();
 
     public static void main(String[] args) {
-        // Add a layout to the frame
-        frame.getContentPane().setLayout(new BorderLayout());
-        // Set a new background color for the frame
-        frame.getContentPane().setBackground(new Color(255, 255, 255));
+        instance.frame.getContentPane().setLayout(new BorderLayout());
+        instance.frame.getContentPane().setBackground(new Color(255, 255, 255));
 
-        // Create a new toolbar and add it to the frame
-        toolbar = new Toolbar();
-        frame.getContentPane().add(toolbar, BorderLayout.PAGE_START);
+        instance.frame.getContentPane().add(instance.toolbar, BorderLayout.PAGE_START);
 
-        // Create a new pinboard and add it to the frame
-        pinboard = new Pinboard();
-        JScrollPane pinboardScrollPane = new JScrollPane(pinboard);
+        // Create a ScrollPane with the Pinboard component and add it to the frame
+        JScrollPane pinboardScrollPane = new JScrollPane(instance.pinboard);
         pinboardScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         pinboardScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pinboardScrollPane.setWheelScrollingEnabled(false);
-        frame.getContentPane().add(pinboardScrollPane, BorderLayout.CENTER);
+        instance.frame.getContentPane().add(pinboardScrollPane, BorderLayout.CENTER);
 
         // Detect the screen size and set it to the preferred size
-        frame.getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+        instance.frame.getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 
         // Application Settings
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Pinboard App");
-        frame.pack();
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
+        instance.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        instance.frame.setTitle("Pinboard Creator");
+        instance.frame.pack();
+        instance.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        instance.frame.setResizable(true);
+        instance.frame.setVisible(true);
     }
 
     /**
-     * Method to update the JFrame.
+     * Updates the JFrame, by calling {@link javax.swing.JFrame#revalidate()} and
+     * {@link javax.swing.JFrame#repaint()}
      */
     public void updateFrame() {
         frame.revalidate();
@@ -76,17 +73,16 @@ public class Main {
     }
 
     /**
-     * Reads a selected {@code .csv file} and creates a List of String[]. 1 String[]
-     * = 1 Line in the file. The String[] contains all necessary information to
-     * create a new note, like title, description or image file path.
+     * Reads a user-chosen {@code .csv file} and turns every line into a String[].
+     * One Array contains the necessary information for one Note.
      */
     public void loadBoardFromFile() {
         try {
-            // Check if the document directory even exists
             final File documentDirectory = new File(projectDocumentFilePath + "\\");
+            // Creates the document directory if it doesn't exist
             documentDirectory.mkdirs();
 
-            // Let the user choose a file he wants to read
+            // Let the user choose a file
             final JFileChooser fileChooser = new JFileChooser(documentDirectory);
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV files", "csv"));
@@ -104,14 +100,17 @@ public class Main {
             // Read the file
             FileReader fr = new FileReader(saveFile);
             BufferedReader br = new BufferedReader(fr);
+            
             String line = "";
-            List<String[]> noteDataLines = new ArrayList<String[]>();
+            List<String[]> noteDataLines = new ArrayList<>();
+            
             while ((line = br.readLine()) != null) {
+                // Splits the string at "," and puts each part into an array
                 String[] tempArr = line.split(",");
                 noteDataLines.add(tempArr);
             }
 
-            // Load the pinboard
+            // Load the pinboard with the String[]
             pinboard.loadPinboard(noteDataLines);
 
             // Update the frame to display the changes
@@ -120,18 +119,18 @@ public class Main {
             // Close the File- and BufferedReader
             br.close();
             fr.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Save the current board to file.
+     * Save the current board to a {@code .csv file}.
      */
     public void saveCurrentBoardToFile() {
         try {
-            // Check if project directory even exists
             final File documentDirectory = new File(projectDocumentFilePath + "\\");
+            // Check if project directory exists and if not create it
             documentDirectory.mkdirs();
 
             // Let the user choose a file name
@@ -140,8 +139,9 @@ public class Main {
             // Create a new file from the users selected file name
             final File saveFile = new File(projectDocumentFilePath + "\\" + fileName + ".csv");
             if (!saveFile.exists()) {
+                // Create a file if it not already exists
                 saveFile.createNewFile();
-            } // Create a file if it not already exists
+            }
 
             List<String[]> dataLines = new ArrayList<>();
             for (Note note : pinboard.getNoteList()) {
@@ -155,11 +155,11 @@ public class Main {
                 String noteImageFilePath = note.getNoteImageFilePath();
 
                 if (noteArea != null) {
-                    // If text note
+                    // If is text note
                     dataLines.add(new String[] { Integer.toString(notePoint.x), Integer.toString(notePoint.y),
                             note.getNoteTitle(), note.getNoteDescriptionTextArea().getText(), "null" });
                 } else if (noteImageFilePath != null) {
-                    // If image note
+                    // If is image note
                     dataLines.add(new String[] { Integer.toString(notePoint.x), Integer.toString(notePoint.y),
                             note.getNoteTitle(), "null", noteImageFilePath });
                 }
@@ -175,7 +175,7 @@ public class Main {
     }
 
     /**
-     * Converts the string array of data to a single string in CSV style.
+     * Converts a string array of data into a single string in CSV style.
      * 
      * @param data
      * @return
@@ -200,38 +200,39 @@ public class Main {
     }
 
     /**
-     * Removes a user-chosen note from the board.
+     * Removes a user-chosen Note from the board.
      */
     public void deleteNoteFromBoard() {
         List<String> optionsList = new ArrayList<>();
-        
+
         List<Note> noteList = pinboard.getNoteList();
-        if(noteList == null || noteList.isEmpty()) {
+        if (noteList == null || noteList.isEmpty()) {
             // Return if there are no notes in the note list
             return;
         }
-        
-        for(Note note : noteList) {
+
+        for (Note note : noteList) {
             // Add the note title to the option list
             optionsList.add(note.getNoteTitle());
         }
-        
+
         // Create an array from all the options
         String[] options = optionsList.stream().toArray(String[]::new);
-        
+
         // Let the user choose a note from all the notes on the board
-        String selectedNoteTitle = JOptionPane.showInputDialog(frame, "Choose the note you want to delete", "Delete Note Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]).toString();
-        
+        String selectedNoteTitle = JOptionPane.showInputDialog(frame, "Choose the note you want to delete",
+                "Delete Note Menu", JOptionPane.PLAIN_MESSAGE, null, options, options[0]).toString();
+
         // Get the note by name
         Note selectedNote = pinboard.getNoteByName(selectedNoteTitle);
-        if(selectedNote != null) {
+        if (selectedNote != null) {
             // Delete the selected note
             pinboard.deleteNote(selectedNote);
         } else {
             System.out.println("Selected Note is null");
         }
     }
-    
+
     /** Get the {@link #frame} */
     public JFrame getFrame() {
         return frame;
