@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.file.Paths;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -120,7 +121,7 @@ public class Toolbar extends JToolBar {
                 }
                 
                 File imageFile = fileChooser.getSelectedFile();
-                Note note = new Note(noteTitle, imageFile.getAbsolutePath());
+                Note note = new Note(noteTitle, Paths.get(imageFile.getAbsolutePath()));
                 Main.instance.getPinboard().getNoteList().add(note);
                 Main.instance.getPinboard().add(note);
                 Main.instance.updateFrame();

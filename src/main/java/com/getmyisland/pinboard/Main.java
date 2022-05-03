@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.getmyisland.pinboard.Note.NoteType;
+
 public class Main {
     /** Main instance to access methods from Main. */
     public static final Main instance = new Main();
@@ -100,10 +102,10 @@ public class Main {
             // Read the file
             FileReader fr = new FileReader(saveFile);
             BufferedReader br = new BufferedReader(fr);
-            
+
             String line = "";
             List<String[]> noteDataLines = new ArrayList<>();
-            
+
             while ((line = br.readLine()) != null) {
                 // Splits the string at "," and puts each part into an array
                 String[] tempArr = line.split(",");
@@ -148,20 +150,21 @@ public class Main {
                 // Store the location of the note
                 Point notePoint = note.getLocation();
 
-                // Store the description
-                JTextArea noteArea = note.getNoteDescriptionTextArea();
+                NoteType noteType = note.getNoteType();
 
-                // Store the file path of the image
-                String noteImageFilePath = note.getNoteImageFilePath();
-
-                if (noteArea != null) {
-                    // If is text note
+                switch (noteType) {
+                case TitleDescriptionNote:
                     dataLines.add(new String[] { Integer.toString(notePoint.x), Integer.toString(notePoint.y),
-                            note.getNoteTitle(), note.getNoteDescriptionTextArea().getText(), "null" });
-                } else if (noteImageFilePath != null) {
-                    // If is image note
+                            noteType.toString(), note.getNoteTitle(), note.getNoteDescriptionTextArea().getText() });
+                    break;
+                case TitleImageNote:
                     dataLines.add(new String[] { Integer.toString(notePoint.x), Integer.toString(notePoint.y),
-                            note.getNoteTitle(), "null", noteImageFilePath });
+                            noteType.toString(), note.getNoteTitle(), note.getNoteImageFilePath().toString() });
+                    break;
+                case ImageNote:
+                    dataLines.add(new String[] { Integer.toString(notePoint.x), Integer.toString(notePoint.y),
+                            noteType.toString(), note.getNoteImageFilePath().toString() });
+                    break;
                 }
             }
 
