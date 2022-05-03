@@ -11,17 +11,12 @@ import javax.swing.JPanel;
 import com.getmyisland.pinboard.Note.NoteType;
 
 public class Pinboard extends JPanel {
-    /** List of {@code notes} to keep track of the current notes on the board */
+    /** List of {@link Note} to keep track of the current notes on the board */
     private List<Note> noteList = new ArrayList<>();
 
     public Pinboard() {
-        // Set a new background color
         setBackground(new Color(255, 255, 255));
-
-        // Sets the preferred size
         setPreferredSize(new Dimension(4000, 4000));
-
-        // Sets the layout
         setLayout(new DragLayout());
     }
 
@@ -39,11 +34,9 @@ public class Pinboard extends JPanel {
     }
 
     /**
-     * Loads a pinboard from a {@code .csv} file. Cycles trough
-     * {@code noteDataLines} and adds new notes to the board. 1 String[] = 1 Note.
+     * Loads a pinboard from a {@code .csv} file. One String[] equals one Note.
      * 
-     * @param noteDataLines a List of String[] to pass in the note data from the
-     *                      save file.
+     * @param noteDataLines
      */
     public void loadPinboard(List<String[]> noteDataLines) {
         cleanBoard();
