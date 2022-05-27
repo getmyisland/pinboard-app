@@ -144,6 +144,12 @@ public class Toolbar extends JToolBar {
         add(deleteNoteButton);
     }
 
+    /**
+     * Custom JButton class to create already styled buttons.
+     * 
+     * @author MFI
+     *
+     */
     public class ToolbarButton extends JButton {
         public ToolbarButton(final String title) {
             setText(title);

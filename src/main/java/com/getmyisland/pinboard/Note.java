@@ -12,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -26,30 +25,36 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class Note extends JPanel {
+    /**
+     * Enum to define all different types of notes.
+     * 
+     * @author MFI
+     *
+     */
     public enum NoteType {
         TitleDescriptionNote,
         TitleImageNote,
         ImageNote
     }
     
-    /** The type of the Note */
+    /** The type of the note. */
     private final NoteType noteType;
     
-    /** The title of the Note. */
+    /** The title of the note. */
     private final String noteTitle;
     /** The JLabel of the {@link #noteTitle}. */
     private final JLabel noteTitleLabel;
 
-    /** The JTextArea containing the Note description. */
+    /** The JTextArea containing the note description. */
     private final JTextArea noteDescriptionTextArea;
 
     /** The file path to the note image. */
     private final Path noteImageFilePath;
 
-    // Drag
+    /** Point to store the starting point when a user clicks on a note. */
     private Point startPoint;
 
-    // Constructor for TitleDescriptionNote
+    /** Create a {@code NoteType.TitleDescriptionNote} note. */
     public Note(final String noteTitle) {
         this.noteType = NoteType.TitleDescriptionNote;
         this.noteTitle = noteTitle;
@@ -76,7 +81,7 @@ public class Note extends JPanel {
         noteImageFilePath = null;
     }
 
-    // Constructor for TitleImageNote
+    /** Create a {@code NoteType.TitleImageNote} note. */
     public Note(final String noteTitle, final Path noteImageFilePath) {
         this.noteType = NoteType.TitleImageNote;
         this.noteTitle = noteTitle;
@@ -127,9 +132,9 @@ public class Note extends JPanel {
         add(noteImageLabel, BorderLayout.CENTER);
     }
     
- // Constructor for ImageNote
+    /** Create a {@code NoteType.ImageNote} note. */
     public Note(final Path noteImageFilePath) {
-        this.noteType = NoteType.TitleImageNote;
+        this.noteType = NoteType.ImageNote;
         this.noteTitle = null;
 
         setLayout(new FlowLayout());

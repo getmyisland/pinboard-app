@@ -1,8 +1,10 @@
-# pinboard-app
+# pinboard-app (WIP)
 
 A pinboard app that allows you to create and connect notes easily.
 
 ## .csv file saving convention
+
+The program uses comma seperated value files to save the current state of the pinboard.
 
 ```
 0. X coordinate of component

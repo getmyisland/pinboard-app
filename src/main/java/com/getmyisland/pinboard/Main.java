@@ -18,7 +18,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.getmyisland.pinboard.Note.NoteType;
@@ -27,11 +26,11 @@ public class Main {
     /** Main instance to access methods from Main. */
     public static final Main instance = new Main();
 
-    /** The file path of the projects directory. */
+    /** File path of the project directory in the users document folder. */
     private final String projectDocumentFilePath = new JFileChooser().getFileSystemView().getDefaultDirectory()
             .toString() + "\\GetMyIsland\\Pinboard";
 
-    /** The main JFrame component containing the Java application. */
+    /** Main JFrame component containing the entire GUI. */
     private final JFrame frame = new JFrame();
 
     /** The toolbar component. */
@@ -67,7 +66,7 @@ public class Main {
 
     /**
      * Updates the JFrame, by calling {@link javax.swing.JFrame#revalidate()} and
-     * {@link javax.swing.JFrame#repaint()}
+     * {@link javax.swing.JFrame#repaint()}.
      */
     public void updateFrame() {
         frame.revalidate();
